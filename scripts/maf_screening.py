@@ -5,8 +5,10 @@ from sys import argv
 
 file_path = argv[1]#'../../data/stage2/NC_044224.2.maf'
 
-list_inno = ["1_bSylAtr1", "1_bGeoTri1", "4_bAquChr1", "1_bSteHir1"]
-list_noninno = ["1_bSylBor1", "2_bTaeGut1", "1_bBucAby1", "1_bAlcTor1"]
+list_inno = argv[2].split(',')
+
+list_noninno = argv[3].split(',')
+num = argv[4]
 
 
 def is_in_list(name, list_of):
@@ -19,13 +21,17 @@ def is_in_list(name, list_of):
 
 
 def check(matrix, num):
+
+    if matrix.shape[1]>0:
     
-    return np.array([(matrix[:,num] == 'A').sum(),
-                     (matrix[:,num] == 'T').sum(),
-                     (matrix[:,num] == 'G').sum(),
-                     (matrix[:,num] == 'C').sum(),
-                    ]), np.array([(matrix[:,num] == 'N').sum(),
-                     (matrix[:,num] == '-').sum()])
+        return np.array([(matrix[:,num] == 'A').sum(),
+                        (matrix[:,num] == 'T').sum(),
+                        (matrix[:,num] == 'G').sum(),
+                        (matrix[:,num] == 'C').sum(),
+                        ]), np.array([(matrix[:,num] == 'N').sum(),
+                        (matrix[:,num] == '-').sum()])
+    else:
+        return np.array([0,0,0,0]), np.array([0,0])
 
 
 def get_df_with_counts(align):
@@ -39,6 +45,9 @@ def get_df_with_counts(align):
         if is_in_list(seqreq[1], list_inno):
 
             align_dict['inno'].append(sequence)
+            if "2_bTaeGut1" in seqreq[1]:
+                start = seqreq[2]
+                length = seqreq[3]
 
         elif is_in_list(seqreq[1], list_noninno):
 
@@ -46,7 +55,6 @@ def get_df_with_counts(align):
             if "2_bTaeGut1" in seqreq[1]:
                 start = seqreq[2]
                 length = seqreq[3]
-
 
     align_dict['inno'] = np.matrix(align_dict['inno'])
     align_dict['non_inno'] = np.matrix(align_dict['non_inno'])
@@ -56,7 +64,6 @@ def get_df_with_counts(align):
     new_list = []
     n=0
     for i in range(length):
-
         inno_array, inno_exept = check(align_dict['inno'], i)
         noninno_array, noninno_exept = check(align_dict['non_inno'], i)
 
@@ -107,10 +114,15 @@ for multiple_alignment in AlignIO.parse(file_path, "maf"):
     
     if len(seqrecs) >= 6:
         
-        multiple_alignments.append(get_df_with_counts(seqrecs))
+        ans_df = get_df_with_counts(seqrecs)
+        ans_df = ans_df[(ans_df['cons']==True) | (ans_df['inno']==True) | (ans_df['non_inno']==True)]
+        multiple_alignments.append(ans_df)
 
         
+try:
+    table = pd.concat(multiple_alignments)
+    table['chrom'] = file_path.split('/')[-1][:-4]
 
-table = pd.concat(multiple_alignments)
-table.to_csv('maf_counts/{}.csv'.format(file_path.split('/')[-1]), index = False)
-    
+    table.to_csv('permutation_test/{}/{}.csv'.format(num, file_path.split('/')[-1]), index = False)
+except ValueError:
+    pass
