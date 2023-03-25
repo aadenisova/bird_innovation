@@ -29,7 +29,7 @@ background = df['element_ID'].tolist()
 i = str(argv[1])
 
 df2 = pd.read_csv('{}{}'.format(path_to_data, 'permutation_test/'+i+'.csv'))
-df2 = df2[df2['start']!='start'].to_csv('{}{}'.format(path_to_data, 'permutation_test/'+i+'.csv'))
+df2 = df2[df2['start']!='start'].to_csv('{}{}'.format(path_to_data, 'permutation_test/'+i+'.csv'), index = False)
 
 df2 = pd.read_csv('{}{}'.format(path_to_data, 'permutation_test/'+i+'.csv'))
 
