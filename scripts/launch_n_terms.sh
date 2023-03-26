@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python scripts_october/permutations_n_terms.py
+python scripts/permutations_n_terms.py
