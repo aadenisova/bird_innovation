@@ -79,4 +79,4 @@ for go in range(len(proc)):
         #df_to_check['n']+=1
 
         
-    df_to_merge.join(df_to_check).to_csv('permutations_n_terms_{}_new.csv'.format(names[go]), index = False)
+    df_to_merge.join(df_to_check).to_csv('permutations_n_terms_{}_new2.csv'.format(names[go]), index = False)
