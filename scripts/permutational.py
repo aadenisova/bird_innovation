@@ -34,7 +34,9 @@ df2 = df2[df2['start']!='start'].to_csv('{}{}'.format(path_to_data, 'permutation
 df2 = pd.read_csv('{}{}'.format(path_to_data, 'permutation_test/'+i+'.csv'))
 
 df2['start'] = df2['start']+1 
-df3 = df2
+df3 = df2[(((df2['n_inno']>=4)&(df2['n_noninno']>=4)) |
+              (((df2['n_inno']==3)&(df2['n_noninno']==4))&((df2['inno_N']==1)|(df2['inno_-']==1)))|
+             (((df2['n_noninno']==3)&(df2['n_inno']==4))&((df2['noninno_N']==1)|(df2['noninno_-']==1))))]
 
 matched_list = []
 
@@ -56,6 +58,6 @@ df_genes['element_ID'] = df_genes['attributes'].apply(lambda x: x.split(';')[0].
 
 genelist = list(set(df_genes['element_ID'].to_list()))
 
-file = open('dir_gene_list/gene_list_{}.txt'.format(i), 'w')
+file = open('dir_gene_list2/gene_list_{}.txt'.format(i), 'w')
 file.write('\n'.join(genelist))
 file.close()
