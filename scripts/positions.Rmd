@@ -1,0 +1,161 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-02-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+library(tidyverse)
+if(!require(ape))install.packages("ape")
+if(!require(phytools))install.packages("phytools")
+# the nlme package will allow us to fit Gaussian linear mixed-effects model
+if(!require(phytools))install.packages("nlme")
+# the dplyr package will help us to handle data tables
+if(!require(phytools))install.packages("dplyr")
+```
+
+```{r}
+library(ape)
+library(phytools)
+library(nlme)
+```
+
+```{r}
+setwd("~/Desktop/coursework/data/stage4")
+getwd() 
+```
+
+```{r}
+order <- read_csv('sorted_inno_sp.csv') %>% rename(sp2 = `VGL ID`)
+
+df <- read_csv('chrom_int_anno.csv')
+df <- df %>% unite('file_name', c(chrom,start), remove=FALSE)
+df$file_name <- paste0("chrom_int/", df$file_name, ".tsv")
+df
+```
+
+```{r}
+get_p_val <- function(file_name) {
+  df_sp <- read_tsv(file_name, show_col_types = FALSE)
+  ans <- df_sp %>% select (sp) %>% separate(sp, sep = '_', into=c('one', 'sp2')) %>% select(sp2)
+  df_sp$sp2 <- c(ans)$sp2
+  
+  df_for_plot <- inner_join(order, df_sp, by = 'sp2') %>% filter(canon!='-')
+  df_for_plot <- df_for_plot %>% mutate(Bin_inno = TotInno_resResEff2022>0.5)
+  
+  classes = c()
+  for (i in 1:nrow(df_for_plot)){
+    classes[df_for_plot$sp2[i]] = df_for_plot$canon[i]
+  }
+  
+  cont = c()
+  for (i in 1:nrow(df_for_plot)){
+    cont[df_for_plot$sp2[i]] = df_for_plot$TotInno_resResEff2022[i]
+  }
+  
+  tree <- read.tree("../initial_data/tree_short_names.tre")
+  pr2.tree = drop.tip(tree, setdiff(tree$tip.label, df_for_plot$sp2))
+  
+  ans <- phylANOVA(pr2.tree, classes, cont, nsim=1000, posthoc=FALSE, p.adj="holm")
+  return (ans$Pf)
+}
+
+
+get_p_val(df$file_name[10])
+
+#inno_let <- df_for_plot %>% filter(df_for_plot$sp2 %in% sp_inno) %>% select(canon) %>% unique() %>% c()
+#non_inno_let <- df_for_plot %>% filter(df_for_plot$sp2 %in% sp_non_inno) %>% select(canon) %>% unique() %>% c()
+```
+```{r}
+
+ans = lapply(df$file_name, FUN=get_p_val)
+write.csv(ans,file="ans_final.csv",row.names=F)
+
+ans = c()
+n=1
+nrow(df)
+
+
+
+for (i in 1713:3000){
+  ans[n] <- get_p_val(df$file_name[i])
+  n = n+ 1
+}
+ans
+
+ans
+
+
+read_csv("ans1.csv")
+read_csv("ans_final.csv")
+
+df
+
+
+
+
+sp_inno <- c('bGeoTri1', 'bSteHir1', 'bSylAtr1', 'bAquChr1')
+sp_non_inno <- c('bTaeGut1', 'bAlcTor1', 'bSylBor1', 'bBucAby1')
+```
+
+
+
+```{r}
+
+df_sp <- read_tsv('chrom_int/NC_044213.2_9554947.tsv', show_col_types = FALSE)
+ans <- df_sp %>% select (sp) %>% separate(sp, sep = '_', into=c('one', 'sp2')) %>% select(sp2)
+df_sp$sp2 <- c(ans)$sp2
+df_sp
+
+df_for_plot <- inner_join(order, df_sp, by = 'sp2') %>% filter(canon!='-')
+df_for_plot <- df_for_plot %>% mutate(Bin_inno = TotInno_resResEff2022>0.5)
+df_for_plot <- remove_rownames(df_for_plot)
+df_for_plot <- column_to_rownames(df_for_plot, 'sp2')
+
+df_for_plot
+
+pr2_tree = drop.tip(tree, setdiff(tree$tip.label, df_for_plot$sp2))
+
+c(df_for_plot$sp2)
+
+classes = c()
+for (i in 1:nrow(df_for_plot)){
+  classes[rownames(df_for_plot)[i]] = df_for_plot$canon[i]
+}
+
+cont = c()
+for (i in 1:nrow(df_for_plot)){
+  cont[rownames(df_for_plot)[i]] = df_for_plot$TotInno_resResEff2022[i]
+}
+
+
+phylANOVA(pr2_tree, classes, cont, nsim=1000, posthoc=FALSE, p.adj="holm")
+
+pr2_tree$tip.label
+
+df_for_plot$canon
+```
+
+```{r}
+help(phylANOVA)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
