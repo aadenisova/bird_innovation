@@ -27,14 +27,15 @@ It takes positions that fall into groups 1,2 or 3 from file in maf_counts (ex. N
 
 ### get_inno.py 
 
-It takes files made by get_bed_int3.py from intervals_by_chrom3 (ex. two_alleles_NC_044216.2.maf.bed) and files made by maf_screening.py from maf_counts (ex. NC_044234.2.maf.csv), filters positions from maf_counts: only positions fall into any of 1, 2, 3 can stay and then merge this files together. 
+It takes files made by get_bed_int3.py from intervals_by_chrom3 (ex. two_alleles_NC_044216.2.maf.bed) and files made by maf_screening.py from maf_counts (ex. NC_044234.2.maf.csv), filters positions from maf_counts: only positions fall into any of 1, 2, 3 can stay and then merge this files together. It saves result to evolved_positions.
 
 ### launch_big_table.sh
 
-### launch_get_bed_int.sh
+It runs make_big_table.py.
 
 ### make_big_table.py
 
+It goes through all chromosomes and distributes the positions obtained from screening maf-files using the script into groups 1, 2 and 3. In a separate file number_of_nucl.tsv writes the number of positions obtained using conventional screening and screening taking into account phylogenetic information using phyloP. It saves results into two_alleles.tsv, fixed_inno.tsv, fixed_noninno.tsv.
 
 ## SNP_analysis
 
