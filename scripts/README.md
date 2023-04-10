@@ -3,7 +3,7 @@ This repository contains scripts that I use to process files related to the Bird
 ## initial_SNP
 
 
-### launch_maf_sc.sh: 
+### launch_maf_sc.sh
 
 It takes chromosome-specific maf-file (ex. NC_044234.2.maf) and runs maf_screening.py using this maf-file as input.
 
@@ -23,9 +23,11 @@ Files are saved in a directory intervals_by_chrom as two_alleles_CHROM.maf.bed (
 
 ### launch_get_inno.sh
 
-It takes positions that fall into groups 1,2 or 3 from file in maf_counts (ex. NC_044234.2.maf.csv) and runs get_inno.py using this csv-file as input.
+It takes positions that fall into groups 1,2 or 3 from file in maf_counts (ex. NC_044234.2.maf.csv) and runs get_inno.py using this csv-file as input
 
 ### get_inno.py 
+
+It takes files made by get_bed_int3.py from intervals_by_chrom3 (ex. two_alleles_NC_044216.2.maf.bed) and files made by maf_screening.py from maf_counts (ex. NC_044234.2.maf.csv), filters positions from maf_counts: only positions fall into any of 1, 2, 3 can stay and then merge this files together. 
 
 ### launch_big_table.sh
 
@@ -33,8 +35,6 @@ It takes positions that fall into groups 1,2 or 3 from file in maf_counts (ex. N
 
 ### make_big_table.py
 
-### maf_screening.py
-           
 
 ## SNP_analysis
 
