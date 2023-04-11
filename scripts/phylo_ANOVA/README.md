@@ -10,7 +10,7 @@ It runs hal2maf --onlyOrthologs --noDupes
 
 ## launch_filter_after_sc.sh
 
-It runs check_gene_files.py
+It runs check_gene_files.py.  Files are saved in a directory 'maf_by_chrom_big/' as CHROM.maf  (ex. NC_044234.2.maf)
 
 ## check_gene_files.py
 
