@@ -1,5 +1,13 @@
 ## phylo_ANOVA
 
+## launch_to_maf_big.sh
+
+It runs to_maf_big.sh
+
+## to_maf_big.sh
+
+It runs hal2maf --onlyOrthologs --noDupes 
+
 ## launch_filter_after_sc.sh
 
 It runs check_gene_files.py
