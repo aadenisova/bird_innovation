@@ -14,7 +14,7 @@ It runs check_gene_files.py.  Files are saved in a directory maf_by_chrom_big as
 
 ## check_gene_files.py
 
-It checks that the genes taken from position_with_genes.tsv in the multiple alignment also satisfy the condition. For this, multiple alignments for 38 from maf_by_chrom_big are used. Files are saved in a directory chrom_int_anno as CHROM.csv (ex. NC_044234.2.csv)
+It checks that the genes in position_with_genes.tsv also fall into one of three groups when considering multiple alignment (for 38). The result of the check is stored in the chrom_int_anno directory as CHROM.csv (ex. NC_044234.2.csv). The alignment pieces themselves are stored in the chrom_int directory (ex. chrom_int/NC_044215.2_20012544.tsv).
 
 ## positions.Rmd
 
