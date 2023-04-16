@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python scripts/permutations_n_terms.py
+python bird_innovation/scripts/permutation_test/permutations_n_terms.py
