@@ -15,7 +15,7 @@ df_allt_all = []
 df_alli_all = []
 df_alln_all = []
 
-li = ['chrom\ttwo_evolved\ttwo_all\tinno_evolved\tinno_all\tnoninno_evolved\tnoninno_all']
+li = ['chrom\ttwo_evolved\ttwo_all\ttwo_merged\tinno_evolved\tinno_all\tinno_merged\tnoninno_evolved\tnoninno_all\tnoninno_merged']
 for i in chr_names['chrom']:
     try:
       df_all_ = pd.read_csv('maf_counts/{}.maf.csv'.format(i))
@@ -39,12 +39,27 @@ for i in chr_names['chrom']:
       df = pd.read_csv('evolved_positions/{}_{}.tsv'.format(cons_type[2], i), sep = '\t')
       dfn = df[df['n'] >= 6]
 
+      shape_t = dft.merge(df_allt, how = 'outer').shape[0]
+      shape_i = dfi.merge(df_alli, how = 'outer').shape[0]
+      shape_n = dfn.merge(df_alln, how = 'outer').shape[0]
+
       
-      li.append('{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(i, dft.shape[0], df_allt.shape[0], dfi.shape[0], df_alli.shape[0], dfn.shape[0], df_alln.shape[0]))
+      li.append('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(i, 
+                                                    dft.shape[0], 
+                                                    df_allt.shape[0], 
+                                                    shape_t,
+                                                    dfi.shape[0], 
+                                                    df_alli.shape[0], 
+                                                    shape_i,
+                                                    dfn.shape[0], 
+                                                    df_alln.shape[0],
+                                                    shape_n
+                                                  )
+                                                )
     except FileNotFoundError:
       pass
 
-f = open('number_of_nucl.tsv', 'w')
+f = open(f'{output_dir}/number_of_nucl.tsv', 'w')
 f.write('\n'.join(li))
 f.close()
 
