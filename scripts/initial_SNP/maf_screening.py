@@ -46,7 +46,7 @@ def get_df_with_counts(align):
             if "2_bTaeGut1" in seqreq[1]:
                 start = seqreq[2]
                 length = seqreq[3]
-
+                zebra_positions = sequence 
 
     align_dict['inno'] = np.matrix(align_dict['inno'])
     align_dict['non_inno'] = np.matrix(align_dict['non_inno'])
@@ -59,7 +59,7 @@ def get_df_with_counts(align):
 
         inno_array, inno_exept = check(align_dict['inno'], i)
         noninno_array, noninno_exept = check(align_dict['non_inno'], i)
-
+        zebra_position = zebra_positions[i]
 
         max_inno = inno_array.sum()
         max_noninno = noninno_array.sum()
@@ -72,8 +72,10 @@ def get_df_with_counts(align):
             inno = (cons==False) and (bool((inno_array==max_inno).sum()) and noninno_array[inno_array.argmax()]==0)
 
             non_inno = (cons==False) and (bool((noninno_array==max_noninno).sum()) and inno_array[noninno_array.argmax()]==0)
-
-            new_list.append([start+n, 
+            
+            if cons or inno or non_inno:
+                
+                new_list.append([start+n, 
                              cons, 
                              inno, 
                              non_inno, 
@@ -85,11 +87,12 @@ def get_df_with_counts(align):
                             inno_exept[0],
                             inno_exept[1],
                             noninno_exept[0],
-                            noninno_exept[1]])
+                            noninno_exept[1],
+			    zebra_position])
         n+=1
 
     df = pd.DataFrame(new_list, columns=['start', 'cons', 'inno', 'non_inno', 'Ref_inno', 'Alt_noninno',
-                                         'n_inno', 'n_noninno', 'n', 'inno_N', 'inno_-', 'noninno_N', 'noninno_-'])
+                                         'n_inno', 'n_noninno', 'n', 'inno_N', 'inno_-', 'noninno_N', 'noninno_-', 'zebra'])
     return df
 
 
@@ -108,9 +111,10 @@ for multiple_alignment in AlignIO.parse(file_path, "maf"):
     if len(seqrecs) >= 6:
         
         multiple_alignments.append(get_df_with_counts(seqrecs))
-
         
-
-table = pd.concat(multiple_alignments)
-table.to_csv('maf_counts/{}.csv'.format(file_path.split('/')[-1]), index = False)
-    
+try:
+    table = pd.concat(multiple_alignments)
+    table['chrom'] = file_path.split('/')[-1][:-4]
+    table.to_csv('coursework_results/maf_counts/{}.csv'.format(file_path.split('/')[-1]), index = False, header = False)
+except ValueError:
+    print(file_path.split('/')[-1][:-4])

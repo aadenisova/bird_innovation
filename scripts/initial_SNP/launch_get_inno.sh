@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH -c 1   
 
-ans=$(ls maf_counts/ | sed "${SLURM_ARRAY_TASK_ID}q;d")
+ans=$(ls coursework_results/maf_counts/ | sed "${SLURM_ARRAY_TASK_ID}q;d")
 chrom=${ans::-8}
 
-python scripts_october/get_inno.py $chrom
+python bird_innovation/scripts/initial_SNP/get_inno.py $chrom

@@ -5,8 +5,8 @@ from sys import argv
 
 chrom = argv[1]
 
-path_evol = 'december/intervals_by_chrom3/'
-path_all_chrom = 'maf_counts/'
+path_evol = 'coursework_results/intervals_by_chrom/'
+path_all_chrom = 'coursework_results/maf_counts/'
 
 
 cons_type = ['two_alleles', 'fixed_inno', 'fixed_noninno']

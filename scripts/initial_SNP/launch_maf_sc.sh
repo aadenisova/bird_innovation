@@ -6,4 +6,4 @@
 
 value=$(ls maf_by_chrom/maf_8sp/ | sed "${SLURM_ARRAY_TASK_ID}q;d")
 
-python scripts_october/maf_screening.py maf_by_chrom/maf_8sp/$value
+python bird_innovation/scripts/initial_SNP/maf_screening.py maf_by_chrom/maf_8sp/$value
