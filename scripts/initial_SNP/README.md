@@ -11,7 +11,8 @@ It finds all positions that fall into groups 1,2 or 3 and writes down the follow
 
 Now you just need to do 
 
-```cd coursework_results/maf_counts/```\n
+```cd coursework_results/maf_counts/```
+
 ```cat * > maf_counts_cated.csv```
 
 after launch_maf_sc.sh 
