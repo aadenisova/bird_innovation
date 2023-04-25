@@ -9,6 +9,14 @@ It takes chromosome-specific maf-file (ex. NC_044234.2.maf) and runs maf_screeni
 
 It finds all positions that fall into groups 1,2 or 3 and writes down the following characteristics for them: start, cons, inno, non_inno, Ref_inno, Alt_noninno, n_inno, n_noninno, n, inno_N, inno_-, noninno_N, noninno_-. Files are saved in a directory maf_counts.
 
+Now you just need to do 
+
+cd coursework_results/maf_counts/
+cat * > maf_counts_cated.csv
+
+after launch_maf_sc.sh 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ### launch_get_bed_int.sh
 
 It takes file made with phyloP (ex. NC_044234.2.maf_final) and runs get_bed_int3.py using this maf_final-file as input.
