@@ -80,27 +80,26 @@ def get_df_with_counts(align):
 
             non_inno = (cons==False) and (bool((noninno_array==max_noninno).sum()) and inno_array[noninno_array.argmax()]==0)
 
-            new_list.append([start+n, 
-                             cons, 
-                             inno, 
-                             non_inno, 
-                            ','.join(list(list_of[inno_array!=0])),
-                            ','.join(list(list_of[noninno_array!=0])), 
-                            max_inno,
-                            max_noninno,
-                            max_inno+max_noninno,
-                            inno_exept[0],
-                            inno_exept[1],
-                            noninno_exept[0],
-                            noninno_exept[1]])
+            if cons or inno or non_inno:
+
+                new_list.append([start+n, 
+                                cons, 
+                                inno, 
+                                non_inno, 
+                                ','.join(list(list_of[inno_array!=0])),
+                                ','.join(list(list_of[noninno_array!=0])), 
+                                max_inno,
+                                max_noninno,
+                                max_inno+max_noninno,
+                                inno_exept[0],
+                                inno_exept[1],
+                                noninno_exept[0],
+                                noninno_exept[1]])
         n+=1
 
     df = pd.DataFrame(new_list, columns=['start', 'cons', 'inno', 'non_inno', 'Ref_inno', 'Alt_noninno',
                                          'n_inno', 'n_noninno', 'n', 'inno_N', 'inno_-', 'noninno_N', 'noninno_-'])
     return df
-
-
-
 
 
 multiple_alignments = []
@@ -115,14 +114,15 @@ for multiple_alignment in AlignIO.parse(file_path, "maf"):
     if len(seqrecs) >= 6:
         
         ans_df = get_df_with_counts(seqrecs)
-        ans_df = ans_df[(ans_df['cons']==True) | (ans_df['inno']==True) | (ans_df['non_inno']==True)]
+        #ans_df = ans_df[(ans_df['cons']==True) | (ans_df['inno']==True) | (ans_df['non_inno']==True)]
         multiple_alignments.append(ans_df)
 
         
 try:
     table = pd.concat(multiple_alignments)
     table['chrom'] = file_path.split('/')[-1][:-4]
-
-    table.to_csv('permutation_test/{}/{}.csv'.format(num, file_path.split('/')[-1]), index = False)
+    table.to_csv('coursework_results/permutation_test/{}/{}.csv'.format(num, file_path.split('/')[-1]), 
+                index = False, 
+                header = False)
 except ValueError:
     pass
