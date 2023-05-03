@@ -11,10 +11,9 @@ from matplotlib import pyplot as plt
 
 
 warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
-path_to_data=''
+PATH_TO_DATA='coursework_results/'
 
-
-annotation = gffpd.read_gff3('{}{}'.format(path_to_data, 'GCF_003957565.2_bTaeGut1.4.pri_genomic.gff'))
+annotation = gffpd.read_gff3(f'{PATH_TO_DATA}/initial_data/GCF_003957565.2_bTaeGut1.4.pri_genomic.gff')
 
 df_ori = annotation.df
 df_ori['chrom']=df_ori['seq_id']
@@ -52,7 +51,7 @@ proc = [go_BP, go_MF, go_CC, go_reactome]
 for go in range(len(proc)):
 
     i=1
-    file = open('dir_gene_list/gene_list_{}.txt'.format(i)).read()
+    file = open(f'{PATH_TO_DATA}dir_gene_list/gene_list_{i}.txt').read()
     genelist = file.split('\n')
 
     df_proc = get_df(proc[go], genelist, background).res2d
@@ -61,11 +60,8 @@ for go in range(len(proc)):
 
     df_to_merge = df_proc.loc[:, ~df_proc.columns.isin(['Term', 'Adjusted P-value'])].reset_index(drop=True)
 
-    #df_to_check['is_smaller'] = 1
-    #df_to_check['n'] = 1
-
-    for i in range(2, 71):
-        file = open('dir_gene_list/gene_list_{}.txt'.format(i)).read()
+    for i in range(2, 36):
+        file = open(f'{PATH_TO_DATA}dir_gene_list/gene_list_{i}.txt').read()
         genelist = file.split('\n')
 
         df_proc = get_df(proc[go], genelist, background).res2d
@@ -79,4 +75,4 @@ for go in range(len(proc)):
         #df_to_check['n']+=1
 
         
-    df_to_merge.join(df_to_check).to_csv('permutations_n_terms_{}_new2.csv'.format(names[go]), index = False)
+    df_to_merge.join(df_to_check).to_csv(f'{PATH_TO_DATA}GO_terms_results/permutations_n_terms_{names[go]}_new2.csv', index = False)

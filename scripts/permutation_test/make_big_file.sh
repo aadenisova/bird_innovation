@@ -1,6 +1,10 @@
 #!/bin/bash
 
-for i in {1..70}
+#SBATCH --nodes=1
+#SBATCH -c 1   
+#SBATCH -o logi/log-%j-%a.out
+
+for i in {1..35}
 do
-cat permutation_test/$i/* > permutation_test/$i.csv
+cat coursework_results/permutation_test/$i/* > coursework_results/permutation_test_cated/$i.csv
 done
