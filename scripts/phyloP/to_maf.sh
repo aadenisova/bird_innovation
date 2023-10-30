@@ -1,4 +1,7 @@
 #!/bin/bash
+
+#SBATCH --output=logi/maf-%x.%j.out
+
 ref_genome=$1
 ref_seq=$2
 sp=$3

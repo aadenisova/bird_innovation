@@ -4,6 +4,7 @@ import pandas as pd
 from sys import argv
 
 file_path = argv[1]#'../../data/stage2/NC_044224.2.maf'
+path_to_output = argv[2] 
 
 list_inno = ["1_bSylAtr1", "1_bGeoTri1", "4_bAquChr1", "1_bSteHir1"]
 list_noninno = ["1_bSylBor1", "2_bTaeGut1", "1_bBucAby1", "1_bAlcTor1"]
@@ -115,6 +116,6 @@ for multiple_alignment in AlignIO.parse(file_path, "maf"):
 try:
     table = pd.concat(multiple_alignments)
     table['chrom'] = file_path.split('/')[-1][:-4]
-    table.to_csv('coursework_results/maf_counts/{}.csv'.format(file_path.split('/')[-1]), index = False, header = False)
+    table.to_csv('coursework_results/{}/{}.csv'.format(path_to_output, file_path.split('/')[-1]), index = False, header = False)
 except ValueError:
     print(file_path.split('/')[-1][:-4])
